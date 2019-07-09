@@ -4,24 +4,24 @@ IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Neighborhood') DROP TABLE [Nei
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'ZIP') DROP TABLE [ZIP];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'City') DROP TABLE [City];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'State') DROP TABLE [State];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Payment') DROP TABLE [Payment];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PaymentType') DROP TABLE [PaymentType];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Order') DROP TABLE [Order];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'OrderDetail') DROP TABLE [OrderDetail];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Guest') DROP TABLE [Guest];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PointType') DROP TABLE [PointType];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Point') DROP TABLE [Point];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PointType') DROP TABLE [PointType];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Order') DROP TABLE [Order];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Comment') DROP TABLE [Comment];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Address') DROP TABLE [Address];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'InvoiceInformation') DROP TABLE [InvoiceInformation];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Client') DROP TABLE [Client];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Payment') DROP TABLE [Payment];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PaymentType') DROP TABLE [PaymentType];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PriceListToCluster') DROP TABLE [PriceListToCluster];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Cluster') DROP TABLE [Cluster];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Comment') DROP TABLE [Comment];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'FeatureToProduct') DROP TABLE [FeatureToProduct];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Banner') DROP TABLE [Banner];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Feature') DROP TABLE [Feature];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'FeatureType') DROP TABLE [FeatureType];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PriceList') DROP TABLE [PriceList];
+
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'ProductToBundle') DROP TABLE [ProductToBundle];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Bundle') DROP TABLE [Bundle];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Clasification') DROP TABLE [Clasification];
@@ -30,12 +30,13 @@ IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Inventory') DROP TABLE [Invent
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Location') DROP TABLE [Location];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Warehouse') DROP TABLE [Warehouse];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'ProductStatus') DROP TABLE [ProductStatus];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'RelatedProducts') DROP TABLE [RelatedProducts];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'RelatedProduct') DROP TABLE [RelatedProduct];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Image') DROP TABLE [Image];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'ImageType') DROP TABLE [ImageType];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Product') DROP TABLE [Product];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Brand') DROP TABLE [Brand];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Category') DROP TABLE [Category];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Product') DROP TABLE [Product];
+IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PriceList') DROP TABLE [PriceList];
 
 
 
@@ -123,14 +124,14 @@ CREATE TABLE [dbo].[Image](
 )
 GO
 
-CREATE TABLE [dbo].[RelatedProducts](
-	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [RelatedProducts]  DEFAULT (newsequentialid()),
+CREATE TABLE [dbo].[RelatedProduct](
+	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_RelatedProduct]  DEFAULT (newsequentialid()),
 	[ParentProductId] [UNIQUEIDENTIFIER] NOT NULL,
 	[ChildProductId] [UNIQUEIDENTIFIER] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
 	[LasteUpdatedDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
-	CONSTRAINT [RelatedProducts] PRIMARY KEY CLUSTERED 
+	CONSTRAINT [PK_RelatedProduct] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
 	),
@@ -168,14 +169,14 @@ CREATE TABLE [dbo].[Warehouse](
 GO
 
 CREATE TABLE [dbo].[Location](
-	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [Location]  DEFAULT (newsequentialid()),
+	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Location]  DEFAULT (newsequentialid()),
 	[WarehouseId] [UNIQUEIDENTIFIER] NOT NULL,
 	[Value] [varchar](255) NOT NULL,
 	[Active] [int] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
 	[LasteUpdatedDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
-	CONSTRAINT [Location] PRIMARY KEY CLUSTERED 
+	CONSTRAINT [PK_Location] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
 	),CONSTRAINT [FK_Location_Warehouse] FOREIGN KEY([WarehouseId]) REFERENCES [dbo].[Warehouse] ([Id])
@@ -266,7 +267,7 @@ GO
 
 
 CREATE TABLE [dbo].[ProductToBundle](
-	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [ProductToBundle]  DEFAULT (newsequentialid()),
+	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_ProductToBundle]  DEFAULT (newsequentialid()),
 	[BundleId] [UNIQUEIDENTIFIER] NOT NULL,
 	[ProductId] [UNIQUEIDENTIFIER] NOT NULL,
 	[PriceListId] [UNIQUEIDENTIFIER] NOT NULL,
@@ -275,11 +276,11 @@ CREATE TABLE [dbo].[ProductToBundle](
 	[CreatedDate] [Datetime] NULL,
 	[LasteUpdatedDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
-	CONSTRAINT [ProductToBundle] PRIMARY KEY CLUSTERED 
+	CONSTRAINT [PK_ProductToBundle] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
 	), CONSTRAINT [FK_ProducToBundle_Bundle] FOREIGN KEY ([BundleId]) REFERENCES [dbo].[Bundle] ([Id])
-	, CONSTRAINT [FK_ProductToBundle_Product] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Product] ([Id])
+	, CONSTRAINT [FK_ProductToBundle_Product] FOREIGN KEY ([ProductId]) REFERENCES [dbo].[Product] ([Id]),
 	CONSTRAINT [FK_ProductToBundle_PriceList] FOREIGN KEY ([PriceListId]) REFERENCES [dbo].[PriceList] ([Id])
 )
 GO
@@ -341,14 +342,14 @@ CREATE TABLE [dbo].[Banner](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Banner]  DEFAULT (newsequentialid()),
 	[Name] [varchar](255) NOT NULL,
 	[Url] [varchar](255) NOT NULL,
-	[ImageId] [varchar] (255) NOT NULL,
+	[ImageId] [UNIQUEIDENTIFIER] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
 	[LasteUpdatedDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Banner] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
-	)CONSTRAINT [FK_Banner_Image] FOREIGN KEY ([ImageId]) REFERENCES [dbo].[Image] ([Id])
+	),CONSTRAINT [FK_Banner_Image] FOREIGN KEY ([ImageId]) REFERENCES [dbo].[Image] ([Id])
 )
 GO
 
@@ -404,6 +405,7 @@ GO
 CREATE TABLE [dbo].[Client](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Client]  DEFAULT (newsequentialid()),
 	[ClientTypeId] [UNIQUEIDENTIFIER] NOT NULL,
+	[ClusterId] [UNIQUEIDENTIFIER] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
 	[Name] [varchar] (255) NOT NULL,
 	[LastName] [varchar] (255) NOT NULL,
@@ -411,7 +413,6 @@ CREATE TABLE [dbo].[Client](
 	[Email] [varchar] (255) NOT NULL,
 	[EmployeeNumber] [varchar] (255) NOT NULL,
 	[Active] [int]  NOT NULL,
-	[ClusterId] [varchar] (255) NOT NULL,
 	[LasteUpdatedDa
 	te] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
