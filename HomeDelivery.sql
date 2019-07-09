@@ -1,6 +1,8 @@
 use [HomeDelivery]
 
-
+/*select 'ALTER TABLE [dbo].['+TABLE_NAME+'] DROP CONSTRAINT '+CONSTRAINT_NAME+';' from INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+select 'DROP TABLE [dbo].['+TABLE_NAME+'];' from INFORMATION_SCHEMA.TABLES
+*/
 
 /*---------------------------------------*/
 CREATE TABLE TiposDeServicio
