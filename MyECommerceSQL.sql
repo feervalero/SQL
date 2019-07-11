@@ -18,10 +18,9 @@ IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PaymentType') DROP TABLE [Paym
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'PriceListToCluster') DROP TABLE [PriceListToCluster];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Cluster') DROP TABLE [Cluster];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'FeatureToProduct') DROP TABLE [FeatureToProduct];
-IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Banner') DROP TABLE [Banner];
+--IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Banner') DROP TABLE [Banner];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Feature') DROP TABLE [Feature];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'FeatureType') DROP TABLE [FeatureType];
-
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'ProductToBundle') DROP TABLE [ProductToBundle];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Bundle') DROP TABLE [Bundle];
 IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Clasification') DROP TABLE [Clasification];
@@ -46,7 +45,7 @@ CREATE TABLE [dbo].[Category](
 	[Level] [varchar](255) NULL,
 	[ParentCategoryId] [uniqueidentifier] NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
 	(
@@ -60,7 +59,7 @@ CREATE TABLE [dbo].[Brand](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Brand]  DEFAULT (newsequentialid()),
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Brand] PRIMARY KEY CLUSTERED 
 	(
@@ -81,7 +80,7 @@ CREATE TABLE [dbo].[Product](
 	[FacebookURL] [varchar](255) NULL,
 	[YouTubeID] [varchar](255) NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED 
 	(
@@ -96,7 +95,7 @@ CREATE TABLE [dbo].[ImageType](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_ImageType]  DEFAULT (newsequentialid()),
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_ImageType] PRIMARY KEY CLUSTERED 
 	(
@@ -105,22 +104,22 @@ CREATE TABLE [dbo].[ImageType](
 )
 GO
 
+
+
 CREATE TABLE [dbo].[Image](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Image]  DEFAULT (newsequentialid()),
 	[Name][varchar](255) NOT NULL,
 	[ImageTypeId] [UNIQUEIDENTIFIER] NULL,
-	[ProductId] [UNIQUEIDENTIFIER] NULL,
-	[URL] [varchar] NULL,
-	[Base64] [varchar] NULL,
+	[URL] [varchar](255) NULL,
+	[Base64] [varchar](255) NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Image] PRIMARY KEY CLUSTERED 
 	(
 		[Id] ASC
 	),
-	CONSTRAINT [FK_Image_ImageType] FOREIGN KEY([ImageTypeId]) REFERENCES [dbo].[ImageType] ([Id]),
-	CONSTRAINT [FK_Image_Product] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Product] ([Id])
+	CONSTRAINT [FK_Image_ImageType] FOREIGN KEY([ImageTypeId]) REFERENCES [dbo].[ImageType] ([Id])
 )
 GO
 
@@ -129,7 +128,7 @@ CREATE TABLE [dbo].[RelatedProduct](
 	[ParentProductId] [UNIQUEIDENTIFIER] NOT NULL,
 	[ChildProductId] [UNIQUEIDENTIFIER] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_RelatedProduct] PRIMARY KEY CLUSTERED 
 	(
@@ -145,7 +144,7 @@ CREATE TABLE [dbo].[ProductStatus](
 	[Value] [varchar](255) NOT NULL,
 	[Active] [int] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_ProductStatus] PRIMARY KEY CLUSTERED 
 	(
@@ -159,7 +158,7 @@ CREATE TABLE [dbo].[Warehouse](
 	[Value] [varchar](255) NOT NULL,
 	[Active] [int] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Warehouse] PRIMARY KEY CLUSTERED 
 	(
@@ -174,7 +173,7 @@ CREATE TABLE [dbo].[Location](
 	[Value] [varchar](255) NOT NULL,
 	[Active] [int] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Location] PRIMARY KEY CLUSTERED 
 	(
@@ -192,7 +191,7 @@ CREATE TABLE [dbo].[Inventory](
 	[AvailableInventoryLevel] [int] NULL,
 	[OnReserveInventoryLevel] [int] NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Inventory] PRIMARY KEY CLUSTERED 
 	(
@@ -210,7 +209,7 @@ CREATE TABLE [dbo].[ClientType](
 	[Name] [varchar](255) NOT NULL,
 	[Active] [int] NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_ClientType] PRIMARY KEY CLUSTERED 
 	(
@@ -224,7 +223,7 @@ CREATE TABLE [dbo].[Clasification](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Clasification]  DEFAULT (newsequentialid()),
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Clasification] PRIMARY KEY CLUSTERED 
 	(
@@ -234,6 +233,7 @@ CREATE TABLE [dbo].[Clasification](
 GO
 
 
+
 CREATE TABLE [dbo].[Bundle](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Bundle]  DEFAULT (newsequentialid()),
 	[ClasificationId] [UNIQUEIDENTIFIER] NOT NULL,
@@ -241,7 +241,7 @@ CREATE TABLE [dbo].[Bundle](
 	[Name] [varchar](255) NOT NULL,
 	[Description] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Bundle] PRIMARY KEY CLUSTERED 
 	(
@@ -256,7 +256,7 @@ CREATE TABLE [dbo].[PriceList](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_PriceList]  DEFAULT (newsequentialid()),
 	[PriceListValue] varchar(50) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_PriceList] PRIMARY KEY CLUSTERED 
 	(
@@ -274,7 +274,7 @@ CREATE TABLE [dbo].[ProductToBundle](
 	[Name] [varchar](255) NOT NULL,
 	[Level] [int] NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_ProductToBundle] PRIMARY KEY CLUSTERED 
 	(
@@ -291,7 +291,7 @@ CREATE TABLE [dbo].[FeatureType](
 	[Value] [varchar](255) NOT NULL,
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_FeatureType] PRIMARY KEY CLUSTERED 
 	(
@@ -308,7 +308,7 @@ CREATE TABLE [dbo].[Feature](
 	[Description] [varchar](255) NOT NULL,
 	[URL] [varchar](255) NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Feature] PRIMARY KEY CLUSTERED 
 	(
@@ -325,7 +325,7 @@ CREATE TABLE [dbo].[FeatureToProduct](
 	[ProductId] [UNIQUEIDENTIFIER] NOT NULL,
 	[FeatureId] [UNIQUEIDENTIFIER] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_FeatureToProduct] PRIMARY KEY CLUSTERED 
 	(
@@ -338,20 +338,20 @@ GO
 
 
 
-CREATE TABLE [dbo].[Banner](
-	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Banner]  DEFAULT (newsequentialid()),
-	[Name] [varchar](255) NOT NULL,
-	[Url] [varchar](255) NOT NULL,
-	[ImageId] [UNIQUEIDENTIFIER] NOT NULL,
-	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
-	[RowVersion] [ROWVERSION] NOT NULL,
-	CONSTRAINT [PK_Banner] PRIMARY KEY CLUSTERED 
-	(
-		[Id] ASC
-	),CONSTRAINT [FK_Banner_Image] FOREIGN KEY ([ImageId]) REFERENCES [dbo].[Image] ([Id])
-)
-GO
+--CREATE TABLE [dbo].[Banner](
+--	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Banner]  DEFAULT (newsequentialid()),
+--	[Name] [varchar](255) NOT NULL,
+--	[Url] [varchar](255) NOT NULL,
+--	[ImageId] [UNIQUEIDENTIFIER] NOT NULL,
+--	[CreatedDate] [Datetime] NULL,
+--	[LastUpdateDate] [Datetime] NULL,
+--	[RowVersion] [ROWVERSION] NOT NULL,
+--	CONSTRAINT [PK_Banner] PRIMARY KEY CLUSTERED 
+--	(
+--		[Id] ASC
+--	),CONSTRAINT [FK_Banner_Image] FOREIGN KEY ([ImageId]) REFERENCES [dbo].[Image] ([Id])
+--)
+--GO
 
 
 
@@ -367,7 +367,7 @@ CREATE TABLE [dbo].[Cluster](
 	[PriceList4Id] [UNIQUEIDENTIFIER] NULL,
 	[InvitationId] [varchar](255) NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Cluster] PRIMARY KEY CLUSTERED 
 	(
@@ -389,7 +389,7 @@ CREATE TABLE [dbo].[PriceListToCluster](
 	[ClusterId] [UNIQUEIDENTIFIER] NOT NULL,
 	[PriceListId] [UNIQUEIDENTIFIER] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_PricelistToCluster] PRIMARY KEY CLUSTERED 
 	(
@@ -434,11 +434,11 @@ CREATE TABLE [dbo].[Comment](
 	[ClientId] [UNIQUEIDENTIFIER] NOT NULL,
 	[ClusterId] [UNIQUEIDENTIFIER] NOT NULL,
 	[ProductId] [UNIQUEIDENTIFIER] NOT NULL,
-	[Comment] [varchar](255) NOT NULL,
+	[Value] [varchar](255) NOT NULL,
 	[Rate] [int] NOT NULL,
 	[Active] [int] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Comment] PRIMARY KEY CLUSTERED 
 	(
@@ -467,7 +467,7 @@ CREATE TABLE [dbo].[InvoiceInformation](
 	[Name] [varchar](255) NULL,
 	[RFC] [varchar](255) NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_InvoiceInformation] PRIMARY KEY CLUSTERED 
 	(
@@ -488,7 +488,7 @@ CREATE TABLE [dbo].[Address](
 	[Phone] [varchar](255) NULL,
 	[References] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED 
 	(
@@ -505,7 +505,7 @@ CREATE TABLE [dbo].[PointType](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_PointType]  DEFAULT (newsequentialid()),
 	[Value] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_PointType] PRIMARY KEY CLUSTERED 
 	(
@@ -523,7 +523,7 @@ CREATE TABLE [dbo].[Guest](
 	[ChildClientId] [UNIQUEIDENTIFIER] NOT NULL,
 	[ExpirationDate] [Datetime] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Guest] PRIMARY KEY CLUSTERED 
 	(
@@ -540,7 +540,7 @@ CREATE TABLE [dbo].[PaymentType](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_PaymentType]  DEFAULT (newsequentialid()),
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_PaymentType] PRIMARY KEY CLUSTERED 
 	(
@@ -557,7 +557,7 @@ CREATE TABLE [dbo].[Payment](
 	[Amount] [decimal] NOT NULL,
 	[Detail] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Payment] PRIMARY KEY CLUSTERED 
 	(
@@ -576,7 +576,7 @@ CREATE TABLE [dbo].[Order](
 	[PaymentId] [UNIQUEIDENTIFIER] NOT NULL,
 	[DisplayNumber] [bigint] NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED 
 	(
@@ -597,7 +597,7 @@ CREATE TABLE [dbo].[Point](
 	[Amount] [bigint] NOT NULL,
 	[Active] [int] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Point] PRIMARY KEY CLUSTERED 
 	(
@@ -626,7 +626,7 @@ CREATE TABLE [dbo].[OrderDetail](
 	[Warehouse] [varchar] (255) NOT NULL,
 	[StorageLocation] [varchar] (255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_OrderDetail] PRIMARY KEY CLUSTERED 
 	(
@@ -644,7 +644,7 @@ CREATE TABLE [dbo].[State](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_State]  DEFAULT (newsequentialid()),
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_State] PRIMARY KEY CLUSTERED 
 	(
@@ -660,7 +660,7 @@ CREATE TABLE [dbo].[City](
 	[StateId] [UNIQUEIDENTIFIER] NOT NULL,
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_City] PRIMARY KEY CLUSTERED 
 	(
@@ -676,7 +676,7 @@ CREATE TABLE [dbo].[ZIP](
 	[StateId] [UNIQUEIDENTIFIER] NOT NULL,
 	[Name] [varchar](255) NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_ZIP] PRIMARY KEY CLUSTERED 
 	(
@@ -692,7 +692,7 @@ CREATE TABLE [dbo].[Neighborhood](
 	[Id] [UNIQUEIDENTIFIER] NOT NULL ROWGUIDCOL CONSTRAINT [DF_Neighborhood]  DEFAULT (newsequentialid()),
 	[ZIPId] [UNIQUEIDENTIFIER] NOT NULL,
 	[CreatedDate] [Datetime] NULL,
-	[LasteUpdatedDate] [Datetime] NULL,
+	[LastUpdateDate] [Datetime] NULL,
 	[RowVersion] [ROWVERSION] NOT NULL,
 	CONSTRAINT [PK_Neighborhood] PRIMARY KEY CLUSTERED 
 	(
